@@ -30,6 +30,10 @@ const updatePost = (id, title, content) => {
   });
 };
 
+const deletePost = id => {
+  postsDB = postsDB.filter(post => post.id !== id);
+};
+
 const router = new express.Router();
 
 // INDEX - GET /posts
@@ -104,6 +108,15 @@ router.put('/:id', (req, res) => {
   updatePost(post.id, title, content);
 
   res.redirect(`/posts/${post.id}`);
+});
+
+// DELETE - DELETE /posts/:id
+router.delete('/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+
+  deletePost(id);
+
+  res.redirect('/posts');
 });
 
 module.exports = router;

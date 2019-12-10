@@ -11,8 +11,17 @@
 <body>
   <h1><%= post.title %></h1>
 
-  <a href="/posts">&lt;- Back to Post List</a>
-  <a href="/posts/<%= post.id %>/edit">Edit this post</a>
+  <div>
+    <a href="/posts">&lt;- Back to Post List</a>
+  </div>
+  <div>
+    <a href="/posts/<%= post.id %>/edit">Edit this post</a>
+  </div>
+  <div>
+    <form action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+      <button type="submit">Delete this post</button>
+    </form>
+  </div>
 
   <p><%= post.content %></p>
 </body>
