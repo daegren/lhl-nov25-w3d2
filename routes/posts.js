@@ -18,6 +18,18 @@ const createPost = (title, content) => {
   return newPost;
 };
 
+const getPost = id =>
+  postsDB.filter(post => post.id === id)[0];
+
+const updatePost = (id, title, content) => {
+  postsDB.forEach(post => {
+    if (post.id === id) {
+      post.title = title;
+      post.content = content;
+    }
+  });
+};
+
 const router = new express.Router();
 
 // INDEX - GET /posts
@@ -49,13 +61,49 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
 
-  const post = postsDB.filter(post => post.id === id)[0];
+  const post = getPost(id);
 
   if (post) {
     res.render('posts/show', { post });
   } else {
     res.status(404).send(`Post with id ${id} not found.`);
   }
+});
+
+// UPDATE - GET /posts/:id/edit
+router.get('/:id/edit', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+
+  const post = getPost(id);
+
+  if (post) {
+    res.render('posts/edit', { post });
+  } else {
+    res.status(404).send(`Post with id ${id} not found.`);
+  }
+});
+
+// UPDATE - PUT /posts/:id
+router.put('/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const post = getPost(id);
+
+  if (!post) {
+    res.status(404).send(`Post with id ${id} not found.`);
+    return;
+  }
+
+  const title = req.body.title;
+  const content = req.body.content;
+
+  if (!title || !content) {
+    res.status(422).send('Please make sure you include both a title and content');
+    return;
+  }
+
+  updatePost(post.id, title, content);
+
+  res.redirect(`/posts/${post.id}`);
 });
 
 module.exports = router;

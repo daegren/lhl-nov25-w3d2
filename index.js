@@ -9,7 +9,7 @@ const postRoutes = require('./routes/posts');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(methodOverride());
+app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 
 app.set('view engine', 'ejs');
