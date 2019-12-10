@@ -2,6 +2,7 @@ const PORT = process.env.PORT || 8080;
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const morgan = require('morgan');
 
 const postRoutes = require('./routes/posts');
 
@@ -9,6 +10,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride());
+app.use(morgan('dev'));
 
 app.set('view engine', 'ejs');
 
